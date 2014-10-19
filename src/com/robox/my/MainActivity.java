@@ -42,7 +42,6 @@ public class MainActivity extends Activity implements SimpleGestureListener{
         linearLayout.setBackgroundColor(Color.rgb(250, 250, 250));
         
         gridview = (GridView) findViewById(R.id.gridview);
-        
         gridview.setAdapter(imgAda=new ImageAdapter(this));
       //  gridview.setBackgroundColor(Color.rgb(34, 35, 38));
         gridview.setBackgroundColor(Color.rgb(250, 250, 250));
