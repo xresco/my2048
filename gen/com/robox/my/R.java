@@ -41,7 +41,7 @@ public final class R {
         public static final int yellow=0x7f02000c;
     }
     public static final class id {
-        public static final int action_settings=0x7f090003;
+        public static final int action_new_game=0x7f090003;
         public static final int gridview=0x7f090001;
         public static final int linearView=0x7f090000;
         public static final int txtScore=0x7f090002;

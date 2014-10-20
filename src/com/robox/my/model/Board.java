@@ -19,6 +19,7 @@ public class Board {
 	private boolean[][] matrixB=new boolean[4][4];
 	private float[][] matrixC=new float[4][4];// Right-Left translation buffer (tells the number of steps that the cell took to reach this point)
 	private float[][] matrixD=new float[4][4];// Up-Down translation buffer
+	private boolean[][] matrixEndGame=new boolean[4][4];
 	private static Board board=null;
 	
 	//getters
@@ -56,6 +57,7 @@ public class Board {
 			{
 				matrix[i][j]=0;
 				matrixB[i][j]=false;
+				matrixEndGame[i][j]=false;
 			}
 		}
 		
@@ -66,6 +68,39 @@ public class Board {
 		matrix[position/4][ position%4]=2;
 	}
 	
+	public boolean[][] getMatrixEndGame() {
+		return matrixEndGame;
+	}
+	public void endGame()
+	{
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				//if(matrix[i][j]!=0)
+					matrixEndGame[i][j]=true;
+		
+	}
+	
+	
+	public void newGame()
+	{
+		rand.setSeed(System.currentTimeMillis() );
+		for(int i=0;i<4;i++)
+		{
+			for(int j=0;j<4;j++)
+			{
+				matrix[i][j]=0;
+				matrixB[i][j]=false;
+				matrixEndGame[i][j]=false;
+			}
+		}
+		
+		//cett the value of two random cells to 2
+		int position=rand.nextInt(16);
+		matrix[position/4][ position%4]=2;
+		position=rand.nextInt(16);
+		matrix[position/4][ position%4]=2;
+		clearMatrices();
+	}
 	//clear the buffers
 	public void clearMatrices()
 	{

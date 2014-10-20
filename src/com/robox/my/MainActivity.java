@@ -10,6 +10,7 @@ package com.robox.my;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,24 +60,31 @@ public class MainActivity extends Activity implements SimpleGestureListener{
         txtScore.setText("");
     }
 
-
+  
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+   
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    	 switch (item.getItemId()) {
+         case R.id.action_new_game:
+         	// Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
+        	 Board.getBoard().endGame();
+        	 imgAda.notifyDataSetChanged();
+        	 new EndGameAsyncTask().execute("");
+         	
+             return true;
+         
+         default:
+             return super.onOptionsItemSelected(item);
+     }
     }
     
     @Override
@@ -135,16 +143,39 @@ public class MainActivity extends Activity implements SimpleGestureListener{
     	  Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
      }
       
-    public void pause() {
-    	try {
-			Thread.sleep(600);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//    public void pause() {
+//    	try {
+//			Thread.sleep(600);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
      @Override
      public void onDoubleTap() {
      //   Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
+     }
+     
+     class EndGameAsyncTask extends AsyncTask<String, String, String> {
+    	 
+         @Override
+         protected String doInBackground(String... f_url) {
+           
+        	 try {
+				Thread.sleep(900);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	 
+            return null;
+         }
+
+         @Override
+         protected void onPostExecute(String file_url) {
+        	 MainActivity.this.imgAda.notifyDataSetChanged();
+        	 Board.getBoard().newGame();
+             Toast.makeText(getApplicationContext(), "New Game.. Good Luck :)", Toast.LENGTH_SHORT).show();
+         }
      }
 }

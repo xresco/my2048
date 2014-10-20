@@ -52,51 +52,66 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
     	
         TextView textView = new TextView(mContext);
-        if (convertView == null)  // if it's not recycled, initialize some attributes
-        	textView.setGravity(Gravity.CENTER);
-        else 
+        textView.setGravity(Gravity.CENTER);
+        if (convertView != null)  // if it's not recycled, initialize some attributes
         	textView= (TextView)convertView;
-
         float density = mContext.getResources().getDisplayMetrics().density;
         String oldValue= textView.getText().toString();
-        textView.setTypeface(null, Typeface.BOLD);
-        if(board.getItemAt(position/4, position%4 )!=0)
-        	textView.setText(String.valueOf(board.getItemAt(position/4, position%4 )));
-        else
-        	textView.setText("");
+        textView.setTypeface(null, Typeface.BOLD);      	
         textView.setLayoutParams(new LayoutParams((int)(90* density + 0.5f),(int)(90* density + 0.5f)));//set the dimensions in the unit of density pixels (dp)
-        int index=log2(board.getItemAt(position/4, position%4 ));
         
-        if(board.getItemAt(position/4, position%4 )!=0) // non-empty cell
-        {
-        	
-        	if(oldValue!=null && oldValue!="" &&board.getMatrixB()[position/4][position%4])// merge operation happened in this cell
-        	{
-        		Animation mAnim = AnimationUtils.loadAnimation(mContext, R.anim.animate);
-                textView.startAnimation(mAnim);
-                textView.setBackgroundResource(iconArray[index%iconArray.length]);	
-        	}
-        	else 
-        	{
-        		
-        		TranslateAnimation in = new TranslateAnimation(
-        			    Animation.RELATIVE_TO_SELF,board.getMatrixC()[position/4][position%4] ,
-        			    Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, board.getMatrixD()[position/4][position%4],  Animation.RELATIVE_TO_SELF, 0.0f
-        			    );
-        		 in.setDuration(200);
-        		 in.setFillAfter( true );
-        		 in.setZAdjustment(Animation.ZORDER_TOP);
-        		 textView.startAnimation(in);
-        		 textView.setBackgroundResource(iconArray[index%iconArray.length]);
-        	}
-        }
-        else // empty cell
-        {
-        	Animation mAnim = AnimationUtils.loadAnimation(mContext, R.anim.alpha);
-            textView.startAnimation(mAnim);
-            textView.setBackgroundResource(R.drawable.soft_grey);
-        }
         
+        if(!board.getMatrixEndGame()[position/4][position%4])
+    	{
+        
+        
+	        if(board.getItemAt(position/4, position%4 )!=0) // non-empty cell
+	        {
+	        	int index=log2(board.getItemAt(position/4, position%4 ));
+	        	textView.setText(String.valueOf(board.getItemAt(position/4, position%4 )));
+	        	if(oldValue!=null && oldValue!="" &&board.getMatrixB()[position/4][position%4])// merge operation happened in this cell
+	        	{
+	        		Animation mAnim = AnimationUtils.loadAnimation(mContext, R.anim.animate);
+	                textView.startAnimation(mAnim);
+	                textView.setBackgroundResource(iconArray[index%iconArray.length]);	
+	        	}
+	        	else 
+	        	{
+	        		
+	        		TranslateAnimation in = new TranslateAnimation(
+	        			    Animation.RELATIVE_TO_SELF,board.getMatrixC()[position/4][position%4] ,
+	        			    Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, board.getMatrixD()[position/4][position%4],  Animation.RELATIVE_TO_SELF, 0.0f
+	        			    );
+	        		 in.setDuration(200);
+	        		 in.setFillAfter( true );
+	        		 in.setZAdjustment(Animation.ZORDER_TOP);
+	        		 textView.startAnimation(in);
+	        		 textView.setBackgroundResource(iconArray[index%iconArray.length]);
+	        	}
+	        }
+	        else // empty cell
+	        { 
+	        	textView.setText("");
+	        	Animation mAnim = AnimationUtils.loadAnimation(mContext, R.anim.alpha);
+	            textView.startAnimation(mAnim);
+	            textView.setBackgroundResource(R.drawable.soft_grey);
+	        }
+    	}
+        else
+        {
+        	TranslateAnimation in = new TranslateAnimation(
+    			    Animation.RELATIVE_TO_SELF,0.0f ,
+    			    Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,  Animation.RELATIVE_TO_SELF, 10.0f
+    			    );
+    		 in.setDuration(900);
+    		 in.setFillAfter( true );
+    		 in.setZAdjustment(Animation.ZORDER_TOP);
+    		 
+    		 textView.startAnimation(in);
+    	//	 board.getMatrixEndGame()[position/4][position%4]=false;
+    	//	 textView.setBackgroundResource(R.drawable.soft_grey);
+        }
+   
         textView.setTextColor(Color.WHITE);
         return textView;
     }
